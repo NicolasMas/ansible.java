@@ -1,0 +1,19 @@
+---
+  ## Let's download the rpm (not the tar.gz)
+  - name: java  | download
+    sudo: yes
+    command: "wget -q -O  /opt/jdk-8-linux-x64.rpm --no-check-certificate --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' http://download.oracle.com/otn-pub/java/jdk/8u25-b17/jdk-8u25-linux-x64.rpm creates=/opt/jdk-8-linux-x64.rpm"
+
+## Invoke yum to install the rpm
+  - name: java  | install rpm
+    yum: name=/opt/jdk-8-linux-x64.rpm state=present
+
+## We use a script to invoke the shell alternative command
+## instead of the ansible alternative module. First we copy
+## it from the repo
+  - name: java  | alternative script copy
+    copy: src=/files/alternatives.sh dest=/opt/
+
+## Then we execute the script
+  - name: java  | alternative script run
+    command: /usr/bin/bash /opt/alternatives.sh
