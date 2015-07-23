@@ -12,7 +12,7 @@
 ## instead of the ansible alternative module. First we copy
 ## it from the repo
   - name: java  | alternative script copy
-    copy: src=/files/alternatives.sh dest=/opt/
+    copy: src=alternatives.sh dest=/opt/
 
 ## Then we execute the script
   - name: java  | alternative script run
