@@ -1,3 +1,10 @@
 ---
 
   java_enabled: yes
+
+  # Java environment variable $JAVA_CMD
+  # to be loaded in a tasks with
+  # `environment:  env` block
+  #
+  env:
+    JAVA_CMD: "usr/bin/java"

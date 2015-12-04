@@ -1,19 +1,31 @@
 ---
   ## Let's download the rpm (not the tar.gz)
-  - name: java  | download
+  - name: Java  | download
     sudo: yes
     command: "wget -q -O  /opt/jdk-8-linux-x64.rpm --no-check-certificate --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' http://download.oracle.com/otn-pub/java/jdk/8u25-b17/jdk-8u25-linux-x64.rpm creates=/opt/jdk-8-linux-x64.rpm"
 
 ## Invoke yum to install the rpm
-  - name: java  | install rpm
+  - name: Java  | install rpm
     yum: name=/opt/jdk-8-linux-x64.rpm state=present
 
 ## We use a script to invoke the shell alternative command
 ## instead of the ansible alternative module. First we copy
 ## it from the repo
-  - name: java  | alternative script copy
+  - name: Java  | alternative script copy
     copy: src=alternatives.sh dest=/opt/
 
 ## Then we execute the script
-  - name: java  | alternative script run
+  - name: Java  | alternative script run
     command: /usr/bin/bash /opt/alternatives.sh
+
+## Adding the var $JAVA_CMD to the default profile (Centos) [but it won't work for the playbook]
+  - name: Java | Adding the path in the Profile files
+    lineinfile: dest=/home/centos/.bash_profile line='export JAVA_CMD=/usr/bin/java' insertafter='EOF' regexp='export JAVA_CMD=/usr/bin/java' state=present
+
+  - name: Java  | Source the bash_profile file
+    shell: source /home/centos/.bash_profile
+
+## Enabling the $JAVA_CMD for the playbook the role might be
+  - name: Java | export the env var for the reste of the playbook
+    shell: echo "$JAVA_CMD"
+    environment:  env
